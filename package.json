@@ -1,0 +1,34 @@
+{
+  "name": "ifttha",
+  "version": "0.1.0",
+  "description": "IFTTT for Home Assistant",
+  "main": "index.js",
+  "author": "Emanuele Marchi <emanuele.marchi@pm.me>",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": "^14.15"
+  },
+  "scripts": {
+    "build": "parcel build --no-source-maps -d ./ --out-file bundle.js index.js",
+    "serve": "yarn dev",
+    "dev": "parcel watch --no-source-maps -d ./ --out-file bundle.js index.js",
+    "ext": "web-ext run"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.1.0",
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-web-ext-tool": "^0.2.1",
+    "postcss-modules": "^4.0.0",
+    "prettier": "^2.2.1",
+    "web-ext": "^5.4.1"
+  },
+  "dependencies": {
+    "tailwindcss": "^2.0.2"
+  }
+}

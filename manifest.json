@@ -1,0 +1,24 @@
+{
+  "browser_action": {
+    "browser_style": true,
+    "default_icon": "icons/icon.svg",
+    "default_title": "IFTTHA",
+    "default_popup": "popup/index.html"
+  },
+  "content_scripts": [{
+    "matches": ["*://*.netflix.com/*"],
+    "js": ["bundle.js"]
+  }],
+  "description": "IFTTT for Home Assistant",
+  "icons": {
+    "48": "icons/48.png",
+    "96": "icons/96.png"
+  },
+  "manifest_version": 2,
+  "name": "If This Then Home Assistant",
+  "permissions": [
+    "<all_urls>",
+    "storage"
+  ],
+  "version": "0.1.0"
+}
