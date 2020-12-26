@@ -1,18 +1,18 @@
 import { SETTINGS } from '../constants'
 import store from '../store'
 
-window.$tabs = function () {
+window.$views = function () {
   return {
     shown: 'rules',
-    isShown(tab) {
-      return tab === this.shown
+    isShown(name) {
+      return name === this.shown
     },
-    show(tab) {
-      this.shown = tab
+    show(name) {
+      this.shown = name
     },
   }
 }
-window.$tabsInit = function () {
+window.$viewsInit = function () {
   return async function () {
     const state = await store.get(SETTINGS)
     if (SETTINGS.some(setting => !state[setting])) {

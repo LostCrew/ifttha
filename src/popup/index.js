@@ -3,4 +3,4 @@ import 'alpinejs'
 
 import './settings'
 import './rules'
-import './tabs'
+import './views'
