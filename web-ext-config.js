@@ -6,5 +6,6 @@ module.exports = {
     firefox: 'firefox',
     firefoxProfile: 'default-release',
   },
+  sourceDir: 'dist',
   verbose: true,
 }

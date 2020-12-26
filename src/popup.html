@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link href="popup.css" rel="stylesheet" />
+  </head>
+  <body class="w-80 bg-gray-800 text-gray-200">
+    <h1 class="bg-gray-900 text-lg font-semibold px-6 pt-3 pb-2">
+      <img src="../static/icons/icon.svg" aria-hidden="true" class="inline-flex w-6 h-6 mr-1"> IFTTHA
+    </h1>
+    <div class="overflow-x-hidden margin-y-10" x-data="$tabs()" x-init="$tabsInit()">
+      <div class="flex items-stretch px-4">
+        <button
+          type="button"
+          class="relative border-b-2 border-transparent p-2 cursor-pointer "
+          :class="{ 'border-white': isShown('rules') }"
+          @click="show('rules')"
+        >
+          Rules
+        </button>
+        <button
+          type="button"
+          for="settings"
+          class="relative border-b-2 border-transparent p-2 cursor-pointer"
+          :class="{ 'border-white': isShown('settings') }"
+          @click="show('settings')"
+        >
+          Settings
+        </button>
+      </div>
+
+      <div :class="{ hidden: !isShown('rules') }">
+        <div class="flex justify-between items-center" title="Toggle rule">
+          <label for="netflix" class="flex-grow cursor-pointer px-4 py-4">Netflix</label>
+          <div class="relative inline-block w-10 mr-4 align-middle select-none ">
+            <input type="checkbox" name="netflix" id="netflix" class="absolute block w-6 h-6 -ml-1 rounded-full bg-white appearance-none cursor-pointer transition-all duration-150 ease-in transform toggle-checkbox" />
+            <label for="netflix" class="block overflow-hidden h-4 mt-1 rounded-full bg-gray-400 cursor-pointer toggle-label transition-colors duration-150 ease-in"></label>
+          </div>
+        </div>
+      </div>
+
+      <div :class="{ hidden: !isShown('settings') }">
+        <form
+          class="flex flex-col px-4 py-3"
+          x-data="$settings()"
+          x-init="$settingsInit()"
+        >
+          <label class="flex flex-col py-1">
+            <span class="pb-1">API Base Url</span>
+            <input
+              id="url"
+              type="url"
+              name="apiBaseUrl"
+              placeholder="e.g. http://192.168.0.2:8123/api/"
+              autofocus
+              required
+              class="bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+              :class="{ 'border-red-500': !isSet('apiBaseUrl') }"
+              x-model.debounce="apiBaseUrl"
+            >
+          </label>
+          <label class="flex flex-col py-1">
+            <span class="py-1">API Token</span>
+            <input
+              id="token"
+              type="text"
+              name="apiToken"
+              placeholder=""
+              required
+              class="bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+              :class="{ 'border-red-500': !isSet('apiToken') }"
+              x-model.debounce="apiToken"
+            >
+          </label>
+          <button type="submit" class="sr-only">Save</button>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script src="popup/index.js" type="module">
+</html>
