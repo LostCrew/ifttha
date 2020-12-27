@@ -13,3 +13,8 @@
 .toggle-checkbox:checked + .toggle-label {
   @apply bg-green-500;
 }
+
+.select option {
+  padding: 0;
+  padding-inline: 0;
+}

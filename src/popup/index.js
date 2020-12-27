@@ -1,6 +1,7 @@
 import 'webextension-polyfill'
 import 'alpinejs'
 
-import './settings'
+import './router'
 import './rules'
-import './views'
+import './rule'
+import './settings'

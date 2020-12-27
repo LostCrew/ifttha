@@ -4,13 +4,18 @@
     <meta charset="utf-8">
     <link href="popup.css" rel="stylesheet" />
   </head>
-  <body class="w-80 bg-gray-800 text-gray-200" x-data="$views()" x-init="$viewsInit()">
+  <body
+    class="w-80 bg-gray-800 text-gray-200"
+    x-data="$router()"
+    x-init="$routerInit()"
+    @to="to($event.detail.name, $event.detail.params)"
+  >
     <header class="flex justify-between items-center bg-gray-900">
       <h1 class="text-lg font-semibold">
         <button
           type="button"
           class="px-4 py-3 font-bold"
-          @click="show('rules')"
+          @click="to('rules')"
         >
           <img src="ha.svg" aria-hidden="true" class="inline-flex w-6 h-6 mr-1">
           IFTTHA
@@ -19,80 +24,147 @@
       <button
         type="button"
         class="flex px-2 py-1 mr-3 rounded cursor-pointer transition-colors duration-150 ease-out"
-        :class="{ 'text-white bg-gray-800': isShown('settings') }"
-        @click="show('settings')"
+        :class="{ 'text-white bg-gray-800': isPage('settings') }"
+        @click="to('settings')"
       >
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" class="w-6 h-6 mr-1"><path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" /></svg>
         <span>Settings</span>
       </button>
     </header>
-    <div class="">
-      <!--<div class="flex items-stretch px-4">
-        <button
-          type="button"
-          class="relative border-b-2 border-transparent p-2 cursor-pointer "
-          :class="{ 'border-white': isShown('rules') }"
-          @click="show('rules')"
-        >
-          Rules
-        </button>
-        <button
-          type="button"
-          class="relative border-b-2 border-transparent p-2 cursor-pointer"
-          :class="{ 'border-white': isShown('settings') }"
-          @click="show('settings')"
-        >
-          Settings
-        </button>
-      </div>-->
 
-      <div :class="{ hidden: !isShown('rules') }">
-        <div class="flex justify-between items-center" title="Toggle rule">
-          <label for="netflix" class="flex-grow cursor-pointer px-4 py-4">Netflix</label>
-          <div class="relative inline-block w-10 mr-4 align-middle select-none ">
-            <input type="checkbox" name="netflix" id="netflix" class="absolute block w-6 h-6 -ml-1 rounded-full bg-white appearance-none cursor-pointer transition-all duration-150 ease-in transform toggle-checkbox" />
-            <label for="netflix" class="block overflow-hidden h-4 mt-1 rounded-full bg-gray-400 cursor-pointer toggle-label transition-colors duration-150 ease-in"></label>
+    <template x-if="isPage('rules')">
+      <div x-data="$rules()" x-init="$rulesInit()">
+        <template x-for="rule in rules" :key="rule.name">
+          <div class="flex justify-between items-center" title="Toggle rule">
+            <button
+              type="button"
+              class="cursor-pointer px-4 py-4"
+              @click="$dispatch('to', { name: 'rule', params: { id: rule.id } })"
+            >
+              <span x-text="rule.name"><span>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" class="w-6 h-6 mr-1" :class="{ hidden: isPage('rule', { id: rule.id }) }"><path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" /></svg>
+            </button>
+            <div class="relative inline-block w-10 mr-4 align-middle select-none">
+              <input type="checkbox" :name="`rule-${rule.id}`" :id="`rule-${rule.id}`" class="absolute block w-6 h-6 -ml-1 rounded-full bg-white appearance-none cursor-pointer transition-all duration-150 ease-in transform toggle-checkbox" :value="rule.enabled" @change="set(rule.id, { enabled: $event.target.checked })" />
+              <label :for="`rule-${rule.id}`" class="block overflow-hidden h-4 mt-1 rounded-full bg-gray-400 cursor-pointer toggle-label transition-colors duration-150 ease-in"></label>
+            </div>
           </div>
-        </div>
+        </template>
+        <template x-if="rules.length === 0">
+          <div class="p-4">No rules yet!</div>
+        </template>
       </div>
+    </template>
 
-      <div :class="{ hidden: !isShown('settings') }">
-        <form
-          class="flex flex-col px-4 py-3"
-          x-data="$settings()"
-          x-init="$settingsInit()"
-        >
-          <label class="flex flex-col py-1">
-            <span class="pb-1">API Base Url</span>
-            <input
-              id="url"
-              type="url"
-              name="apiBaseUrl"
-              placeholder="e.g. http://192.168.0.2:8123/api/"
-              autofocus
-              required
-              class="bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
-              :class="{ 'border-red-500': !isSet('apiBaseUrl') }"
-              x-model.debounce="apiBaseUrl"
-            >
-          </label>
-          <label class="flex flex-col py-1">
-            <span class="py-1">API Token</span>
-            <input
-              id="token"
-              type="text"
-              name="apiToken"
-              placeholder=""
-              required
-              class="bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
-              :class="{ 'border-red-500': !isSet('apiToken') }"
-              x-model.debounce="apiToken"
-            >
-          </label>
-          <button type="submit" class="sr-only">Save</button>
-        </form>
-      </div>
-    </div>
+    <template x-if="isPage('rule')">
+      <form
+        class="px-4 py-3"
+        x-data="$rule()"
+        x-init="$ruleInit()"
+      >
+        <label class="block py-1">
+          <span class="pb-1">Name</span>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            placeholder="e.g. Netflix"
+            autofocus
+            required
+            class="w-full bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+            :class="{ 'border-red-500': !isSet('name') }"
+            x-model.debounce="rule.name"
+          >
+        </label>
+        <label class="block py-1">
+          <span class="pb-1">If (condition)</span>
+          <select name="if" class="w-full appearance-none bg-transparent color-white py-1 border-b-2 transition duration-150 ease-out focus:outline-none focus:border-blue-500 select" x-model="rule.if">
+            <option value="fullscreen">Fullscreen</option>
+          </select>
+        </label>
+        <label class="block py-1">
+          <span class="pb-1">Then (On)</span>
+          <input
+            id="thenOn"
+            type="text"
+            name="thenOn"
+            placeholder="e.g. scene.my_scene"
+            autofocus
+            required
+            class="w-full bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+            :class="{ 'border-red-500': !isSet('thenOn') }"
+            x-model.debounce="rule.thenOn"
+          >
+        </label>
+        <label class="block py-1">
+          <span class="pb-1">Then (Off)</span>
+          <input
+            id="thenOff"
+            type="text"
+            name="thenOff"
+            placeholder="e.g. scene.my_scene"
+            autofocus
+            required
+            class="w-full bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+            :class="{ 'border-red-500': !isSet('thenOff') }"
+            x-model.debounce="rule.thenOff"
+          >
+        </label>
+        <div class="flex justify-between items-center px-2">
+          <button
+            type="button"
+            class="flex px-2 py-1 mr-3 rounded cursor-pointer transition-colors duration-150 ease-out"
+            @click="$dispatch('to', { name: 'rules' })"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            class="flex px-2 py-1 mr-3 rounded cursor-pointer transition-colors duration-150 ease-out"
+            @click="remove(); $dispatch('to', { name: 'rules' })"
+          >
+            Delete
+          </button>
+        </div>
+      </form>
+    </template>
+
+    <template x-if="isPage('settings')">
+      <form
+        class="px-4 py-3"
+        x-data="$settings()"
+        x-init="$settingsInit()"
+      >
+        <label class="block py-1">
+          <span class="pb-1">API Base Url</span>
+          <input
+            id="apiBaseUrl"
+            type="url"
+            name="apiBaseUrl"
+            placeholder="e.g. http://192.168.0.2:8123/api/"
+            autofocus
+            required
+            class="w-full bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+            :class="{ 'border-red-500': !isSet('apiBaseUrl') }"
+            x-model.debounce="apiBaseUrl"
+          >
+        </label>
+        <label class="block py-1">
+          <span class="py-1">API Token</span>
+          <input
+            id="apiToken"
+            type="text"
+            name="apiToken"
+            placeholder=""
+            required
+            class="w-full bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+            :class="{ 'border-red-500': !isSet('apiToken') }"
+            x-model.debounce="apiToken"
+          >
+        </label>
+        <button type="submit" class="sr-only">Save</button>
+      </form>
+    </template>
   </body>
   <script src="popup/index.js" type="module">
 </html>

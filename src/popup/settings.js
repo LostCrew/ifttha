@@ -15,9 +15,9 @@ window.$settings = function () {
 }
 
 window.$settingsInit = function () {
-  const watchHandler = (key, value) => {
+  const watcher = async (key, value) => {
     try {
-      store.set({ [key]: value }) // await
+      await store.set({ [key]: value })
     } catch (err) {
       console.log(err)
     }
@@ -27,7 +27,7 @@ window.$settingsInit = function () {
     const state = await store.get(SETTINGS)
     this.apiBaseUrl = state.apiBaseUrl || ''
     this.apiToken = state.apiToken || ''
-    this.$watch('apiBaseUrl', watchHandler.bind(this, 'apiBaseUrl'))
-    this.$watch('apiToken', watchHandler.bind(this, 'apiToken'))
+    this.$watch('apiBaseUrl', watcher.bind(this, 'apiBaseUrl'))
+    this.$watch('apiToken', watcher.bind(this, 'apiToken'))
   }
 }
