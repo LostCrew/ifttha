@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": false,
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
+    "moduleResolution": "node",
+    "target": "es6",
+    "outDir": "lib",
+  },
+  "exclude": ["node_modules"],
+  "include": ["src/**/*", "types.ts"],
+}

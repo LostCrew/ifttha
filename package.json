@@ -10,13 +10,19 @@
     "node": "^14.15"
   },
   "scripts": {
-    "build": "parcel build -d dist src/index.js src/popup.html",
-    "dev": "parcel watch -d dist src/index.js src/popup.html",
+    "build": "parcel build -d dist src/index.ts src/popup.html",
+    "clean": "rm -rf dist",
+    "dev": "parcel watch -d dist src/index.ts src/popup.html",
     "ext": "web-ext run",
+    "lint": "eslint . --ext .ts",
     "serve": "yarn dev"
   },
   "devDependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.2",
+    "@types/lodash": "^4.14.166",
+    "@types/uuid": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.0",
     "autoprefixer": "^9",
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",
@@ -31,11 +37,13 @@
     "postcss-modules": "^4.0.0",
     "prettier": "^2.2.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "typescript": "^4.1.3",
     "web-ext": "^5.4.1",
-    "webextension-polyfill": "^0.7.0"
+    "webextension-polyfill-ts": "^0.22.0"
   },
   "dependencies": {
     "alpinejs": "^2.8.0",
+    "lodash": "^4.17.20",
     "uuid": "^8.3.2"
   }
 }
