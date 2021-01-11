@@ -16,13 +16,6 @@ export const watch = (keys: string[], callback: (changes: Changes) => void): voi
     if (areaName === area) {
       return
     }
-    /*
-    const items = compose(
-      changes,
-      filter(key => key in keys),
-      mapValues((key, { newValue }) => newValue)
-    )
-    */
     const filtered = filter(changes, (value, key) => key in keys)
     const items = mapValues(filtered, 'newValue')
     if (!isEmpty(items)) {

@@ -1,4 +1,4 @@
-import { ComponentInit, Rules } from '../../../types'
+import { Init, Rules } from '../../../types'
 import { all, update } from '../../store/rules'
 
 type State = {
@@ -12,7 +12,7 @@ type Component = State & {
 declare global {
   interface Window {
     $rules: () => Component
-    $rulesInit: ComponentInit
+    $rulesInit: Init
   }
 }
 
@@ -28,7 +28,6 @@ window.$rules = function () {
 window.$rulesInit = function () {
   return async function () {
     const rules = await all()
-    console.log(rules)
     this.rules = rules
   }
 }

@@ -1,6 +1,6 @@
 import isEqual from 'lodash/isEqual'
 
-import { ComponentInit } from '../../types'
+import { Init } from '../../types'
 import store from '../store/index'
 import { areValid as areSettingsValid } from '../store/settings'
 
@@ -21,7 +21,7 @@ type Component = State & {
 declare global {
   interface Window {
     $router: () => Component
-    $routerInit: ComponentInit
+    $routerInit: Init
   }
 }
 
@@ -31,12 +31,13 @@ window.$router = function () {
       name: 'rules',
       params: {},
     },
-    isPage(name, params = {}) {
+    isPage(name, params) {
       const matchName = name === this.page.name
-      const matchParams = isEqual(params, this.page.params)
+      const matchParams = params ? isEqual(params, this.page.params) : true
       return matchName && matchParams
     },
     async to(name, params = {}) {
+      console.log(name, params)
       await store.set({ page: { name, params } })
       this.page = { name, params }
     },

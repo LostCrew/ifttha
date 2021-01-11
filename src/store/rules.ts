@@ -9,8 +9,16 @@ const getKey = (id: RuleID) => `${keyPrefix}${id}`
 
 export const all = async (): Promise<Rules> => {
   const state = await store.get()
-  const filtered = filter(state, (value, key) => key.startsWith(keyPrefix))
+  const predicate = (value: Rule, key: RuleID): value is Rule => key.startsWith(keyPrefix)
+  const filtered = filter(state, predicate)
   return Object.values(filtered)
+}
+
+export const get = async (id: RuleID): Promise<Rule> => {
+  const key = getKey(id)
+  const state = await store.get(key)
+  const rule = state[key] as Rule
+  return rule
 }
 
 export const add = async (data: Rule): Promise<unknown> => {
@@ -22,12 +30,12 @@ export const add = async (data: Rule): Promise<unknown> => {
 
 export const update = async (id: RuleID, data: Partial<Rule>): Promise<unknown> => {
   const key = getKey(id)
-  const items = await store.get(key)
-  const item = items[key]
-  if (!item) {
+  const rules = await store.get(key)
+  const rule = rules[key] as Rule
+  if (!rule) {
     return
   }
-  const updated = Object.assign(item, data)
+  const updated = Object.assign(rule, data)
   return store.set({ [key]: updated })
 }
 export const remove = (id: RuleID): Promise<unknown> => store.remove(getKey(id))

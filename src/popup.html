@@ -10,6 +10,7 @@
     x-init="$routerInit()"
     @to="to($event.detail.name, $event.detail.params)"
   >
+    <!-- HEADER -->
     <header class="flex justify-between items-center bg-gray-900">
       <h1 class="text-lg font-semibold">
         <button
@@ -23,32 +24,34 @@
       </h1>
       <button
         type="button"
-        class="flex px-2 py-1 mr-3 rounded cursor-pointer transition-colors duration-150 ease-out"
-        :class="{ 'text-white bg-gray-800': isPage('settings') }"
+        class="group flex px-2 py-1 mr-3 rounded cursor-pointer transition-colors duration-150 ease-out"
+        :class="{ 'bg-gray-800': isPage('settings') }"
         @click="to('settings')"
       >
-        <svg viewBox="0 0 24 24" class="w-6 h-6 mr-1"><path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" /></svg>
+        <svg viewBox="0 0 24 24" class="w-6 h-6 mr-1 transition-color duration-150 ease-out group-hover:text-gray-200" :class="{ 'text-gray-400': !isPage('settings') }"><path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" /></svg>
         <span>Settings</span>
       </button>
     </header>
 
+    <!-- RULES -->
+
     <template x-if="isPage('rules')">
-      <section x-data="$rules()" x-init="$rulesInit()" class="py-1">
-        <h2 class="sr-only">Rules</h2>
+      <section x-data="$rules()" x-init="$rulesInit()" class="px-4 py-3">
+        <h2 class="text-xl">Rules</h2>
         <template x-if="rules.length > 0" x-for="rule in rules" :key="rule.name">
-          <div class="flex justify-between items-center px-4 py-1">
-            <div class="flex items-center">
-              <span x-text="rule.name"></span>
+          <div class="flex justify-between items-center py-1">
+            <div class="flex items-center overflow-hidden" :title="rule.name">
+              <span x-text="rule.name" class="text-lg min-width overflow-ellipsis overflow-hidden"></span>
               <button
                 type="button"
-                class="cursor-pointer px-3 py-2"
+                class="group cursor-pointer px-3 py-1"
                 @click="$dispatch('to', { name: 'rule', params: { id: rule.id } })"
                 aria-label="Edit"
               >
-                <svg viewBox="0 0 24 24" class="w-6 h-6 ml-1"><path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>
+                <svg viewBox="0 0 24 24" class="w-6 h-6 ml-1 text-gray-400 transition-colors duration-150 ease-out group-hover:text-gray-200"><path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>
               </button>
             </div>
-            <div class="relative inline-block w-10 align-middle select-none">
+            <div class="flex-shrink-0 relative inline-block w-10 align-middle select-none">
               <input type="checkbox" :name="`rule-${rule.id}`" :id="`rule-${rule.id}`" class="absolute block w-6 h-6 -ml-1 rounded-full bg-white appearance-none cursor-pointer transition-all duration-150 ease-in transform toggle-checkbox" :checked="rule.enabled" @change="setEnabled(rule.id, $event.target.checked)" />
               <label :for="`rule-${rule.id}`" class="block overflow-hidden h-4 mt-1 rounded-full bg-gray-400 cursor-pointer toggle-label transition-colors duration-150 ease-in">
                 <span class="sr-only">Turn rule on/off</span>
@@ -67,7 +70,7 @@
             class="flex px-3 py-2 mt-2 bg-blue-500 rounded cursor-pointer transition-colors duration-150 ease-out"
             @click="$dispatch('to', { name: 'rule' })"
           >
-            <svg viewBox="0 0 24 24" class="w-6 h-6 ml-1">
+            <svg viewBox="0 0 24 24" class="w-6 h-6 mr-1">
               <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
             </svg>
             Add rule
@@ -75,6 +78,8 @@
         </div>
       </section>
     </template>
+
+    <!-- RULE -->
 
     <template x-if="isPage('rule')">
       <form
@@ -84,8 +89,9 @@
         x-init="$ruleInit()"
         @submit.prevent="onSubmit($dispatch, $event)"
       >
+        <h2 x-text="isEdit ? 'Edit rule' : 'Add rule'" class="text-xl"></h2>
         <label class="block py-1">
-          <span class="pb-1">Name</span>
+          <span class="pb-1 text-sm text-gray-400">Name</span>
           <input
             id="name"
             type="text"
@@ -93,50 +99,68 @@
             placeholder="e.g. Netflix"
             autofocus
             required
-            class="w-full bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
-            :class="{ 'border-red-500': !isFieldValid('name') }"
+            class="w-full bg-transparent color-white py-1 border-b-2 border-gray-400 placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+            :class="{ 'border-red-500': hasFieldError('name') }"
             x-model.debounce.150="fields.name"
           >
         </label>
-        <label class="block py-1">
-          <span class="pb-1">If (condition)</span>
-          <select
-            id="if"
-            name="if"
-            required
-            class="w-full appearance-none bg-transparent color-white py-1 border-b-2 transition duration-150 ease-out focus:outline-none focus:border-blue-500 select"
-            x-model="fields.if"
+        <fieldset id="conditions" class="px-4 py-1 pb-3 my-2 rounded bg-gray-700">
+          <legend class="px-4 pt-1 rounded text-lg bg-gray-700">Conditions</legend>
+          <template x-for="(condition, index) in fields.conditions" :key="condition.id">
+            <label class="block py-1">
+              <span class="pb-1 text-sm text-gray-400">Type</span>
+              <select
+                :id="`condition-${index}`"
+                :name="`condition-${index}`"
+                :required="haveOneCondition()"
+                class="w-full appearance-none bg-transparent color-white py-1 border-b-2 transition duration-150 ease-out focus:outline-none focus:border-blue-500 select"
+                :class="{ 'border-red-500': hasFieldError(`condition-${index}`) }"
+                x-model="condition.id"
+              >
+                <option value="fullscreen" :selected="condition.id === 'fullscreen'">Fullscreen</option>
+              </select>
+            </label>
+          </template>
+          <!--<button
+            type="button"
+            class="flex px-3 py-2 my-2 border rounded cursor-pointer transition-colors duration-150 ease-out"
+            @click="addCondition()"
           >
-            <option value="">Condition…</option>
-            <option value="fullscreen" :selected="fields.if === 'fullscreen'">Fullscreen</option>
-          </select>
-        </label>
+            Add condition
+          </button>-->
+        </fieldset>
         <label class="block py-1">
-          <span class="pb-1">Then (On)</span>
+          <span class="pb-1 text-sm text-gray-400">
+            On action
+            <span class="text-sm uppercase font-bold ml-1">[then]</span>
+          </span>
           <input
-            id="thenOn"
+            id="actionOn"
             type="text"
-            name="thenOn"
+            name="actionOn"
             placeholder="e.g. scene.my_scene"
             autofocus
             required
-            class="w-full bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
-            :class="{ 'border-red-500': !isFieldValid('thenOn') }"
-            x-model.debounce.150="fields.thenOn"
+            class="w-full bg-transparent color-white py-1 border-b-2 border-gray-400 placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+            :class="{ 'border-red-500': hasFieldError('actionOn') }"
+            x-model.debounce.150="fields.actionOn"
           >
         </label>
         <label class="block py-1">
-          <span class="pb-1">Then (Off)</span>
+          <span class="pb-1 text-sm text-gray-400">
+            Off action
+            <span class="text-sm uppercase font-bold ml-1">[revert]</span>
+          </span>
           <input
-            id="thenOff"
+            id="actionOff"
             type="text"
-            name="thenOff"
+            name="actionOff"
             placeholder="e.g. scene.my_scene"
             autofocus
             required
-            class="w-full bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
-            :class="{ 'border-red-500': !isFieldValid('thenOff') }"
-            x-model.debounce.150="fields.thenOff"
+            class="w-full bg-transparent color-white py-1 border-b-2 border-gray-400 placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+            :class="{ 'border-red-500': hasFieldError('actionOff') }"
+            x-model.debounce.150="fields.actionOff"
           >
         </label>
         <div class="flex justify-between items-center">
@@ -149,7 +173,7 @@
           </div>
         </div>
         <div class="flex justify-between items-center py-3">
-          <div>
+          <div class="flex item-center">
             <template x-if="isEdit()">
               <button
                 type="button"
@@ -159,18 +183,18 @@
                 Delete
               </button>
             </template>
+            <button
+              type="reset"
+              class="flex px-3 py-2 ml-2 border rounded cursor-pointer transition-colors duration-150 ease-out"
+              @click="onReset($dispatch)"
+            >
+              Back
+            </button>
           </div>
           <div class="flex item-center">
             <button
-              type="reset"
-              class="flex px-3 py-2 border rounded cursor-pointer transition-colors duration-150 ease-out"
-              @click="onReset($dispatch)"
-            >
-              Cancel
-            </button>
-            <button
               type="submit"
-              class="flex px-3 py-2 ml-2 bg-blue-500 rounded cursor-pointer transition-colors duration-150 ease-out"
+              class="flex px-3 py-2 bg-blue-500 rounded cursor-pointer transition-colors duration-150 ease-out"
             >
               Save
             </button>
@@ -178,6 +202,8 @@
         </div>
       </form>
     </template>
+
+    <!-- SETTINGS -->
 
     <template x-if="isPage('settings')">
       <form
@@ -189,7 +215,7 @@
       >
         <div class="py-1">
           <label class="block">
-            <span class="pb-1">API Base Url</span>
+            <span class="pb-1 text-sm text-gray-400">API Base Url</span>
             <input
               id="apiBaseUrl"
               type="url"
@@ -197,8 +223,8 @@
               placeholder="e.g. http://192.168.0.2:8123/api/"
               autofocus
               required
-              class="w-full bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
-              :class="{ 'border-red-500': !isFieldValid('apiBaseUrl') }"
+              class="w-full bg-transparent color-white py-1 border-b-2 border-gray-400 placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+              :class="{ 'border-red-500': !hasFieldError('apiBaseUrl') }"
               :value="apiBaseUrl"
               x-model.debounce.150="fields.apiBaseUrl"
             >
@@ -209,14 +235,14 @@
         </div>
         <div class="py-1">
           <label class="block">
-            <span class="py-1">API Token</span>
+            <span class="pb-1 text-sm text-gray-400">API Token</span>
             <input
               id="apiToken"
               type="text"
               name="apiToken"
               required
-              class="w-full bg-transparent color-white py-1 border-b-2 border-white placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
-              :class="{ 'border-red-500': !isFieldValid('apiToken') }"
+              class="w-full bg-transparent color-white py-1 border-b-2 border-gray-400 placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+              :class="{ 'border-red-500': !hasFieldError('apiToken') }"
               :value="apiBaseUrl"
               x-model.debounce.150="fields.apiToken"
             >

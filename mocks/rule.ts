@@ -6,7 +6,7 @@ export const rules = (): Rule => ({
   id: uuid(),
   name: 'Netflix',
   enabled: false,
-  if: 'fullscreen',
-  thenOn: 'scene.living_room_night',
-  thenOff: 'scene.living_room_dusk',
+  conditions: ['fullscreen'],
+  actionOn: 'scene.living_room_night',
+  actionOff: 'scene.living_room_dusk',
 })

@@ -1,4 +1,4 @@
-import { ComponentInit } from '../../../types'
+import { Init } from '../../../types'
 import store from '../../store/index'
 import createForm, { Component as FormComponent } from './form'
 
@@ -7,7 +7,7 @@ type Component = FormComponent
 declare global {
   interface Window {
     $settings: () => Component
-    $settingsInit: ComponentInit
+    $settingsInit: Init
   }
 }
 
@@ -21,7 +21,7 @@ window.$settings = function () {
     async onSubmit($dispatch) {
       this.submitted = true
       if (this.isValid()) {
-        await store.set({ ...this.fields })
+        await store.set(JSON.parse(JSON.stringify(this.fields)))
         $dispatch('to', { name: 'rules' })
       }
     },

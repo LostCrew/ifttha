@@ -1,24 +1,24 @@
 import { Settings } from '../types'
-import store from './store/index'
+import store from './store'
+import { keys as settingsKeys } from './store/settings'
 
 type HAData = Record<string, string>
 type HAResponse = Promise<unknown>
+type HADomain = string
+type HAService = string
 
-let state: Settings = {
-  apiBaseUrl: '',
-  apiToken: '',
-}
+let settings: Settings = Object.fromEntries(settingsKeys.map(key => [key, ''])) as Settings
 
 const updateState = async (): Promise<void> => {
-  state = (await store.get(['apiBaseUrl', 'apiUrl'])) as Settings
+  settings = (await store.get(settingsKeys)) as Settings
 }
 
 const request = async (path: string, options = {}): HAResponse => {
   await updateState()
   try {
-    const response = await fetch(`${state.apiBaseUrl}${path}`, {
+    const response = await fetch(`${settings.apiBaseUrl}${path}`, {
       headers: {
-        Authorization: `Bearer ${state.apiToken}`,
+        Authorization: `Bearer ${settings.apiToken}`,
         'Content-Type': 'application/json',
       },
       ...options,
@@ -30,8 +30,8 @@ const request = async (path: string, options = {}): HAResponse => {
 }
 
 const get = request
-const post = (url: string, options) => request(url, { ...options, method: 'post' })
+const post = (url: string, options: RequestInit) => request(url, { ...options, method: 'post' })
 
 export const getRoot = (): HAResponse => get('/')
-export const postService = (domain: string, service: string, data: HAData): HAResponse =>
+export const postService = (domain: HADomain, service: HAService, data: HAData): HAResponse =>
   post(`/services/${domain}/${service}`, { body: JSON.stringify(data) })

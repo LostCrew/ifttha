@@ -1,6 +1,6 @@
 # IFTTHA
 
-IFTTT for [Home Assistant](https://www.home-assistant.io/), in your browser.
+A IFTTT for [Home Assistant](https://www.home-assistant.io/), in your browser. **Still heavily work in progress!**
 
 ## Installation
 

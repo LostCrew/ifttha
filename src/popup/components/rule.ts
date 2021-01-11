@@ -1,4 +1,5 @@
-import { AlpineDispatch, ComponentInit } from '../../../types'
+import { AlpineDispatch, Condition, Init, Rule } from '../../../types'
+import store from '../../store'
 import * as rules from '../../store/rules'
 import createForm, { Component as FormComponent } from './form'
 
@@ -13,26 +14,40 @@ type Component = FormComponent & Methods
 declare global {
   interface Window {
     $rule: () => Component
-    $ruleInit: ComponentInit
+    $ruleInit: Init
   }
 }
+
+const createCondition = (): Condition => ({
+  id: 'fullscreen',
+  data: {},
+})
+
+const createFields = (): Rule => ({
+  id: '',
+  name: '',
+  enabled: false,
+  conditions: [createCondition()],
+  actionOn: '',
+  actionOff: '',
+})
 
 window.$rule = function () {
   return {
     ...createForm(),
-    fields: {
-      id: '',
-      name: '',
-      enabled: false,
-      if: '',
-      thenOn: '',
-      thenOff: '',
-    },
+    fields: createFields(),
     async onDelete($dispatch) {
       if (this.isEdit()) {
         await rules.remove(this.fields.id)
         $dispatch('to', { name: 'rules' })
       }
+    },
+    addCondition() {
+      const condition = createCondition()
+      return this.fields.conditions.push(condition)
+    },
+    haveOneCondition() {
+      return this.fields.conditions.length === 1
     },
     isEdit() {
       return this.fields.id
@@ -43,7 +58,7 @@ window.$rule = function () {
     async onSubmit($dispatch) {
       this.submitted = true
       if (this.isValid()) {
-        const data = { ...this.fields }
+        const data = JSON.parse(JSON.stringify(this.fields))
         if (!this.isEdit()) {
           await rules.add(data)
         } else {
@@ -57,10 +72,15 @@ window.$rule = function () {
 
 window.$ruleInit = function () {
   return async function () {
-    const { page } = await store.get('page')
-    if (page?.params.id) {
-      // TODO: back to rules if rule is not found
-      this.fields = await rules.get(page.params.id)
+    try {
+      const { page } = await store.get('page')
+      console.log(page)
+      if (page?.params.id) {
+        // TODO: back to rules if rule is not found
+        this.fields = await rules.get(page.params.id)
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 }

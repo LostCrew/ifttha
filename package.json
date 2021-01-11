@@ -1,7 +1,7 @@
 {
   "name": "ifttha",
   "version": "0.1.0",
-  "description": "IFTTT for Home Assistant",
+  "description": "A IFTTT-like browser extension for Home Assistant",
   "main": "index.js",
   "author": "Emanuele Marchi <emanuele.marchi@pm.me>",
   "license": "MIT",
