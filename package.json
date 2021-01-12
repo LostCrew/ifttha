@@ -1,50 +1,39 @@
 {
-  "name": "iftthavue",
+  "name": "ifttha",
   "version": "0.1.0",
+  "description": "A IFTTT-like browser extension for Home Assistant",
+  "main": "src/index.js",
+  "author": "Emanuele Marchi <emanuele.marchi@pm.me>",
   "private": true,
+  "engines": {
+    "node": "^14.15"
+  },
   "scripts": {
-    "serve": "vue-cli-service build --mode development --watch",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "yarn serve",
+    "ext": "web-ext run",
+    "ext-lint": "web-ext lint",
+    "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service build --mode development --watch"
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "lodash": "^4.17.20",
+    "uuid": "^8.3.2",
     "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^2.33.0",
+    "@types/firefox-webext-browser": "^82.0.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
-    "@vue/eslint-config-typescript": "^5.0.2",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0-0",
-    "typescript": "~3.9.3",
-    "vue-cli-plugin-browser-extension": "~0.25.1"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true,
-      "webextensions": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended",
-      "@vue/typescript"
-    ],
-    "parserOptions": {
-      "parser": "@typescript-eslint/parser"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "typescript": "~4.1.3",
+    "vue-cli-plugin-browser-extension": "~0.25.1",
+    "web-ext": "^5.4.1",
+    "webextension-polyfill-ts": "^0.22.0"
+  }
 }
