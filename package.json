@@ -14,6 +14,7 @@
     "clean": "rm -rf dist",
     "dev": "parcel watch -d dist src/index.ts src/popup.html",
     "ext": "web-ext run",
+    "ext-lint": "web-ext lint",
     "lint": "eslint . --ext .ts",
     "serve": "yarn dev"
   },
