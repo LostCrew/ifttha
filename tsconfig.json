@@ -12,7 +12,9 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env"
+      "chrome",
+      "firefox-webext-browser",
+      "webpack-env",
     ],
     "paths": {
       "@/*": [
