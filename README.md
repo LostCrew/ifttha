@@ -1,6 +1,6 @@
 # IFTTHA
 
-A IFTTT-like browser extension for [Home Assistant](https://www.home-assistant.io/). **Still heavily work in progress!**
+An IFTTT-like browser extension for [Home Assistant](https://www.home-assistant.io/). **Still heavily work in progress!**
 
 ## Installation
 

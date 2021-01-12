@@ -3,14 +3,9 @@ module.exports = {
     node: true,
     webextensions: true
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:vue/vue3-essential',
-    // '@vue/typescript',
-    '@vue/prettier'
-  ],
+  extends: ['eslint:recommended', 'plugin:vue/vue3-essential', '@vue/prettier', '@vue/typescript'],
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: '@typescript-eslint/parser'
   },
   root: true,
   rules: {

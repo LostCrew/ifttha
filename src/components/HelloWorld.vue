@@ -9,11 +9,11 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'HelloWorld',
-  mounted () {
+  mounted() {
     browser.runtime.sendMessage({})
   },
   computed: {
-    defaultText () {
+    defaultText() {
       return browser.i18n.getMessage('extName')
     }
   }
