@@ -1,4 +1,5 @@
-import { AlpineDispatch, Condition, Init, Rule } from '../../../types'
+import { Condition } from './../../../types/index'
+import { Action, AlpineDispatch, Condition, Init, Rule } from '../../../types'
 import store from '../../store'
 import * as rules from '../../store/rules'
 import createForm, { Component as FormComponent } from './form'
@@ -23,25 +24,27 @@ const createCondition = (): Condition => ({
   data: {},
 })
 
+const createAction = (): Action => ({
+  id: 'scene-turn-on',
+  data: {},
+})
+
 const createFields = (): Rule => ({
   id: '',
   name: '',
   enabled: false,
   conditions: [createCondition()],
-  actionOn: '',
-  actionOff: '',
+  actionOn: createAction(),
+  actionOff: createAction(),
 })
 
 window.$rule = function () {
   return {
     ...createForm(),
+    actionOffShown: false,
+    actionOnShown: false,
+    conditionsShown: false,
     fields: createFields(),
-    async onDelete($dispatch) {
-      if (this.isEdit()) {
-        await rules.remove(this.fields.id)
-        $dispatch('to', { name: 'rules' })
-      }
-    },
     addCondition() {
       const condition = createCondition()
       return this.fields.conditions.push(condition)
@@ -51,6 +54,22 @@ window.$rule = function () {
     },
     isEdit() {
       return this.fields.id
+    },
+    onActionOn() {
+      this.actionOnShown = !this.actionOnShown
+    },
+    onActionOff() {
+      this.actionOffShown = !this.actionOffShown
+    },
+    onConditions() {
+      console.log(this.conditionsShown)
+      this.conditionsShown = !this.conditionsShown
+    },
+    async onDelete($dispatch) {
+      if (this.isEdit()) {
+        await rules.remove(this.fields.id)
+        $dispatch('to', { name: 'rules' })
+      }
     },
     onReset($dispatch) {
       $dispatch('to', { name: 'rules' })
@@ -72,15 +91,10 @@ window.$rule = function () {
 
 window.$ruleInit = function () {
   return async function () {
-    try {
-      const { page } = await store.get('page')
-      console.log(page)
-      if (page?.params.id) {
-        // TODO: back to rules if rule is not found
-        this.fields = await rules.get(page.params.id)
-      }
-    } catch (err) {
-      console.log(err)
+    const { page } = await store.get('page')
+    if (page?.params.id) {
+      // TODO: back to rules if rule is not found
+      this.fields = await rules.get(page.params.id)
     }
   }
 }

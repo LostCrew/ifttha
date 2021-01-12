@@ -11,12 +11,8 @@ type Methods = {
   onSubmit?: ($dispatch: AlpineDispatch, $event: unknown) => void
 }
 
-type Field = {
-  value: string | number | boolean
-  required: boolean
-}
-type SettingsFields = Record<keyof Settings, Field>
-type RuleFields = Record<keyof Rule, Field>
+type SettingsFields = Record<keyof Settings, string>
+type RuleFields = Record<keyof Rule, string | Record<string, string>>
 
 export type Component = State & Methods
 export type ComponentArg = Partial<Methods> & { fields: SettingsFields | RuleFields }

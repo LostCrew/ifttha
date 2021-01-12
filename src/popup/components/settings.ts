@@ -1,5 +1,5 @@
 import { Init } from '../../../types'
-import store from '../../store/index'
+import store from '../../store'
 import createForm, { Component as FormComponent } from './form'
 
 type Component = FormComponent

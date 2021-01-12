@@ -37,7 +37,6 @@ window.$router = function () {
       return matchName && matchParams
     },
     async to(name, params = {}) {
-      console.log(name, params)
       await store.set({ page: { name, params } })
       this.page = { name, params }
     },

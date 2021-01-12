@@ -60,7 +60,7 @@
           </div>
         </template>
         <template x-if="rules.length === 0">
-          <div class="px-4 py-3">
+          <div class="py-3">
             <p>No rules yet!</p>
           </div>
         </template>
@@ -104,17 +104,23 @@
             x-model.debounce.150="fields.name"
           >
         </label>
-        <fieldset id="conditions" class="px-4 py-1 pb-3 my-2 rounded bg-gray-700">
-          <legend class="px-4 pt-1 rounded text-lg bg-gray-700">Conditions</legend>
-          <template x-for="(condition, index) in fields.conditions" :key="condition.id">
+
+        <fieldset id="conditions" class="px-4 py-1 pb-3 my-3 rounded bg-gray-700">
+          <legend
+            class="px-4 pt-1 rounded text-lg bg-gray-700 cursor-pointer"
+            @click="onConditions()"
+          >
+            Conditions
+            <span class="text-sm uppercase font-bold ml-1">[if]</span>
+          </legend>
+          <template x-if="conditionsShown" x-for="(condition, index) in fields.conditions" :key="condition.id">
             <label class="block py-1">
               <span class="pb-1 text-sm text-gray-400">Type</span>
               <select
-                :id="`condition-${index}`"
-                :name="`condition-${index}`"
+                :id="`condition-${index}-id`"
+                :name="`condition-${index}-id`"
                 :required="haveOneCondition()"
                 class="w-full appearance-none bg-transparent color-white py-1 border-b-2 transition duration-150 ease-out focus:outline-none focus:border-blue-500 select"
-                :class="{ 'border-red-500': hasFieldError(`condition-${index}`) }"
                 x-model="condition.id"
               >
                 <option value="fullscreen" :selected="condition.id === 'fullscreen'">Fullscreen</option>
@@ -129,40 +135,87 @@
             Add condition
           </button>-->
         </fieldset>
-        <label class="block py-1">
-          <span class="pb-1 text-sm text-gray-400">
-            On action
+
+        <fieldset id="actionOn" class="px-4 py-1 pb-3 my-3 rounded bg-gray-700">
+          <legend
+            class="px-4 pt-1 rounded text-lg bg-gray-700 cursor-pointer"
+            @click="onActionOn()"
+          >
+            ON Action
             <span class="text-sm uppercase font-bold ml-1">[then]</span>
-          </span>
-          <input
-            id="actionOn"
-            type="text"
-            name="actionOn"
-            placeholder="e.g. scene.my_scene"
-            autofocus
-            required
-            class="w-full bg-transparent color-white py-1 border-b-2 border-gray-400 placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
-            :class="{ 'border-red-500': hasFieldError('actionOn') }"
-            x-model.debounce.150="fields.actionOn"
+          </legend>
+          <template x-if="actionOnShown">
+            <label class="block py-1">
+              <span class="pb-1 text-sm text-gray-400">Type</span>
+              <select
+                id="actionOnId"
+                name="actionOnId"
+                required
+                class="w-full appearance-none bg-transparent color-white py-1 border-b-2 transition duration-150 ease-out focus:outline-none focus:border-blue-500 select"
+                :class="{ 'border-red-500': hasFieldError('actionOnId') }"
+                x-model="fields.actionOn.id"
+              >
+                <option value="scene-turn-on" :selected="fields.actionOn.id === 'scene-turn-on'">Turn on scene</option>
+              </select>
+            </label>
+            <label class="block py-1">
+              <span class="pb-1 text-sm text-gray-400">
+                Entity ID
+              </span>
+              <input
+                id="actionOnEntityId"
+                type="text"
+                name="actionOnEntityId"
+                placeholder="e.g. scene.my_scene"
+                required
+                class="w-full bg-transparent color-white py-1 border-b-2 border-gray-400 placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+                :class="{ 'border-red-500': hasFieldError('actionOnEntityId') }"
+                x-model.debounce.150="fields.actionOn.data.entityID"
+              >
+            </label>
+          </template>
+        </fieldset>
+
+        <fieldset id="actionOff" class="px-4 py-1 pb-3 my-3 rounded bg-gray-700">
+          <legend
+            class="px-4 pt-1 rounded text-lg bg-gray-700 cursor-pointer"
+            @click="onActionOff()"
           >
-        </label>
-        <label class="block py-1">
-          <span class="pb-1 text-sm text-gray-400">
-            Off action
-            <span class="text-sm uppercase font-bold ml-1">[revert]</span>
-          </span>
-          <input
-            id="actionOff"
-            type="text"
-            name="actionOff"
-            placeholder="e.g. scene.my_scene"
-            autofocus
-            required
-            class="w-full bg-transparent color-white py-1 border-b-2 border-gray-400 placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
-            :class="{ 'border-red-500': hasFieldError('actionOff') }"
-            x-model.debounce.150="fields.actionOff"
-          >
-        </label>
+            OFF Action
+            <span class="text-sm uppercase font-bold ml-1">[then]</span>
+          </legend>
+          <template x-if="actionOffShown">
+            <label class="block py-1">
+              <span class="pb-1 text-sm text-gray-400">Type</span>
+              <select
+                id="actionOffId"
+                name="actionOffId"
+                required
+                class="w-full appearance-none bg-transparent color-white py-1 border-b-2 transition duration-150 ease-out focus:outline-none focus:border-blue-500 select"
+                :class="{ 'border-red-500': hasFieldError('actionOffId') }"
+                x-model="fields.actionOff.id"
+              >
+                <option value="scene-turn-on" :selected="fields.actionOff.id === 'scene-turn-on'">Turn on scene</option>
+              </select>
+            </label>
+            <label class="block py-1">
+              <span class="pb-1 text-sm text-gray-400">
+                Entity ID
+              </span>
+              <input
+                id="actionOffEntityId"
+                type="text"
+                name="actionOffEntityId"
+                placeholder="e.g. scene.my_scene"
+                required
+                class="w-full bg-transparent color-white py-1 border-b-2 border-gray-400 placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
+                :class="{ 'border-red-500': hasFieldError('actionOffEntityId') }"
+                x-model.debounce.150="fields.actionOff.data.entityID"
+              >
+            </label>
+          </template>
+        </fieldset>
+
         <div class="flex justify-between items-center">
           <label for="enabled" class="flex items-center flex-grow cursor-pointer py-4">
             Enabled
@@ -172,6 +225,7 @@
             <label for="enabled" class="block overflow-hidden h-4 mt-1 rounded-full bg-gray-400 cursor-pointer toggle-label transition-colors duration-150 ease-in"></label>
           </div>
         </div>
+
         <div class="flex justify-between items-center py-3">
           <div class="flex item-center">
             <template x-if="isEdit()">
@@ -224,7 +278,7 @@
               autofocus
               required
               class="w-full bg-transparent color-white py-1 border-b-2 border-gray-400 placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
-              :class="{ 'border-red-500': !hasFieldError('apiBaseUrl') }"
+              :class="{ 'border-red-500': hasFieldError('apiBaseUrl') }"
               :value="apiBaseUrl"
               x-model.debounce.150="fields.apiBaseUrl"
             >
@@ -242,7 +296,7 @@
               name="apiToken"
               required
               class="w-full bg-transparent color-white py-1 border-b-2 border-gray-400 placeholder-opacity-50 placeholder-gray-200 transition duration-150 ease-out focus:outline-none focus:border-blue-500"
-              :class="{ 'border-red-500': !hasFieldError('apiToken') }"
+              :class="{ 'border-red-500': hasFieldError('apiToken') }"
               :value="apiBaseUrl"
               x-model.debounce.150="fields.apiToken"
             >

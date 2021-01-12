@@ -8,8 +8,6 @@ type AreAllMet = () => boolean
 
 const state = new Map<RuleID, RuleState>() // TODO: define types
 
-const turnOnScene = (scene: string) => api.postService('scene', 'turn_on', { entity_id: scene })
-
 const addRuleState = (id: RuleID, conditions: Conditions) => {
   state.set(id, Object.fromEntries(conditions.map(({ id }) => [id, { met: false }])) as RuleState)
 }
@@ -24,9 +22,11 @@ const enableCondition = (condition: Condition, rule: Rule, areAllMet: AreAllMet)
     const ruleState = state.get(rule.id)
     ruleState[condition.id].met = met
     const allMet = areAllMet()
-    const scene = allMet ? rule.actionOn : rule.actionOff
-    // TODO: customize this based on actions
-    turnOnScene(scene)
+    const action = allMet ? rule.actionOn : rule.actionOff
+    switch (action.id) {
+      case 'scene-turn-on':
+        api.postService('scene', 'turn_on', { entity_id: action.data.entityID })
+    }
   }
   switch (condition.id) {
     case 'fullscreen':
