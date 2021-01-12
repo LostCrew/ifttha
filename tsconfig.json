@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "target": "esnext",
+  },
+  "exclude": ["node_modules"],
+  "include": [
+    "src/**/*",
+    "types/types.ts",
+    "types/alpine.ts"
+  ],
+}
