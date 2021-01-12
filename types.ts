@@ -31,3 +31,8 @@ export type Settings = {
   apiBaseUrl: string
   apiToken: string
 }
+
+export type HAData = Record<string, string>
+export type HAResponse = Promise<unknown>
+export type HADomain = string
+export type HAService = string

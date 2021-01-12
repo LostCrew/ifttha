@@ -26,6 +26,7 @@ const enableCondition = (condition: Condition, rule: Rule, areAllMet: AreAllMet)
     switch (action.id) {
       case 'scene-turn-on':
         api.postService('scene', 'turn_on', { entity_id: action.data.entityID })
+        break
     }
   }
   switch (condition.id) {
