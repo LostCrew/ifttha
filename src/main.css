@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::placeholder {
+  opacity: 1;
+}
+
+.toggle-checkbox:checked {
+  @apply translate-x-6;
+}
+
+.toggle-checkbox:checked + .toggle-label {
+  @apply bg-green-500;
+}
+
+.select option {
+  padding: 0;
+  padding-inline: 0;
+}
