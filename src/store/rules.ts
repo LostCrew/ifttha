@@ -2,23 +2,22 @@ import filter from 'lodash/filter'
 import { v4 as uuid } from 'uuid'
 
 import { Rules, Rule, RuleID } from '../types'
-import store from './index'
+import * as store from './index'
 
 const keyPrefix = 'rule-'
 const getKey = (id: RuleID) => `${keyPrefix}${id}`
 
 export const all = async (): Promise<Rules> => {
-  const state = await store.get()
-  const predicate = (value: Rule, key: RuleID): value is Rule => key.startsWith(keyPrefix)
-  const filtered = filter(state, predicate)
+  const state = (await store.get([])) as Object
+  const predicate = (value: Rule, key: RuleID): boolean => key.startsWith(keyPrefix)
+  const filtered = filter(state, predicate) as Object
   return Object.values(filtered)
 }
 
 export const get = async (id: RuleID): Promise<Rule> => {
   const key = getKey(id)
   const state = await store.get(key)
-  const rule = state[key] as Rule
-  return rule
+  return state[key]
 }
 
 export const add = async (data: Rule): Promise<unknown> => {
@@ -38,4 +37,4 @@ export const update = async (id: RuleID, data: Partial<Rule>): Promise<unknown> 
   const updated = Object.assign(rule, data)
   return store.set({ [key]: updated })
 }
-export const remove = (id: RuleID): Promise<unknown> => store.remove(getKey(id))
+export const remove = (id: RuleID) => store.remove(getKey(id))

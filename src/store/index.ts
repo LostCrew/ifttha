@@ -4,16 +4,25 @@ import mapValues from 'lodash/mapValues'
 import isEmpty from 'lodash/isEmpty'
 
 type Changes = Record<string, Storage['StorageChange']>
+type StorageGetKeys = string | string[] | Object | null
+type StorageSetItems = Object
+type StorageRemoveKeys = string | string[]
+// type StorageCallback = (items: { [key: string]: any }) => void
 
 const area = 'local'
-const store = browser.storage[area]
+const storage = (chrome || browser).storage[area]
+
+export const get = (keys: StorageGetKeys): Promise<{ [key: string]: any }> =>
+  new Promise(resolve => storage.get(keys, resolve))
+export const set = (items: StorageSetItems): Promise<null> =>
+  new Promise(resolve => storage.set(items, resolve.bind(null, null)))
+export const remove = (keys: StorageRemoveKeys): Promise<null> =>
+  new Promise(resolve => storage.remove(keys, resolve.bind(null, null)))
 
 export { area }
-export default store
-
 export const watch = (keys: string[], callback: (changes: Changes) => void): void => {
-  browser.storage.onChanged.addListener((changes, areaName) => {
-    if (areaName === area) {
+  ;(chrome || browser).storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== area) {
       return
     }
     const filtered = filter(changes, (value, key) => key in keys)

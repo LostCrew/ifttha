@@ -1,11 +1,11 @@
 import { HAResponse, Settings } from '..//types'
-import store from '../store'
+import { get } from '../store'
 import { keys as settingsKeys } from '../store/settings'
 
 let settings: Settings = Object.fromEntries(settingsKeys.map(key => [key, ''])) as Settings
 
 const updateState = async (): Promise<void> => {
-  settings = (await store.get(settingsKeys)) as Settings
+  settings = (await get(settingsKeys)) as Settings
 }
 
 export default async (path: string, options = {}): HAResponse => {

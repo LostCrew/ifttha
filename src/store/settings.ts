@@ -1,7 +1,7 @@
 import every from 'lodash/every'
 
 import { Settings } from '../types'
-import store, { watch } from './index'
+import { get, watch } from './index'
 
 type Callback = (value: boolean, oldValue?: boolean) => void
 type Options = {
@@ -14,7 +14,7 @@ const validate = (settings: Settings): boolean => every(settings)
 export { keys }
 
 export const areValid = async (): Promise<boolean> => {
-  const settings = (await store.get(keys)) as Settings
+  const settings = (await get(keys)) as Settings
   return keys.every(key => key in settings) && validate(settings)
 }
 
